@@ -1,0 +1,112 @@
+﻿@model MedicalPriceListMgmt.Models.ErrorViewModel
+
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8 col-lg-7">
+
+            <div class="card shadow-sm border-0">
+
+                <!-- Header -->
+                <div class="card-header bg-danger text-white py-3">
+                    <h4 class="mb-0">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Application Error
+                    </h4>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body text-center p-5">
+
+                    <!-- Error Icon -->
+                    <div class="mb-4">
+                        <i class="bi bi-exclamation-circle text-danger"
+                           style="font-size: 70px;"></i>
+                    </div>
+
+                    <!-- Error Title -->
+                    <h1 class="text-danger fw-bold">
+                        Error
+                    </h1>
+
+                    <h4 class="text-danger mb-3">
+                        An error occurred while processing your request.
+                    </h4>
+
+                    <p class="text-muted">
+                        We are unable to complete your request at this time.
+                    </p>
+
+                    <!-- Request ID -->
+                    @if (Model.ShowRequestId)
+                    {
+                        <div class="alert alert-light border mt-4 text-start">
+
+                            <strong>
+                                <i class="bi bi-fingerprint me-1"></i>
+                                Request ID:
+                            </strong>
+
+                            <code class="ms-2">
+                                @Model.RequestId
+                            </code>
+
+                        </div>
+                    }
+
+                    <!-- Help Information -->
+                    <div class="alert alert-warning mt-4 text-start">
+
+                        <h6 class="fw-bold">
+                            <i class="bi bi-info-circle me-1"></i>
+                            What should you do?
+                        </h6>
+
+                        <p class="mb-0">
+                            Please try the operation again. If the problem
+                            persists, contact the ICT Department for assistance.
+                        </p>
+
+                    </div>
+
+                    <!-- Return Button -->
+                    <div class="mt-4">
+
+                        <a asp-controller="PriceList"
+                           asp-action="Index"
+                           class="btn btn-success px-4">
+
+                            <i class="bi bi-house-door-fill me-2"></i>
+                            Return to Dashboard
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer text-center bg-light py-3">
+
+                    <small class="text-muted">
+                        <strong>
+                            University of Benin Teaching Hospital (UBTH)
+                        </strong>
+                        <br />
+                        Medical Price List Management System
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

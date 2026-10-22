@@ -1,0 +1,222 @@
+﻿@{
+    ViewData["Title"] = "Medical Price List Dashboard";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-success">
+                Medical Price List Dashboard
+            </h2>
+
+            <p class="text-muted mb-0">
+                University of Benin Teaching Hospital
+            </p>
+        </div>
+
+        <div>
+            <a asp-controller="PriceList"
+               asp-action="ViewList"
+               class="btn btn-success">
+                <i class="bi bi-list"></i>
+                View Price List
+            </a>
+        </div>
+    </div>
+
+
+    <!-- Dashboard Cards -->
+    <div class="row g-4">
+
+        <!-- Total Services -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <h6 class="text-muted">
+                                Total Services
+                            </h6>
+
+                            <h2 class="fw-bold text-success">
+                                @ViewBag.TotalItems
+                            </h2>
+                        </div>
+
+                        <div class="text-success fs-1">
+                            <i class="bi bi-clipboard2-pulse"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Total Departments -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <h6 class="text-muted">
+                                Departments
+                            </h6>
+
+                            <h2 class="fw-bold text-primary">
+                                @ViewBag.TotalDepartments
+                            </h2>
+                        </div>
+
+                        <div class="text-primary fs-1">
+                            <i class="bi bi-building"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Average Price -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <h6 class="text-muted">
+                                Average Service Price
+                            </h6>
+
+                            <h2 class="fw-bold text-warning">
+                                ₦@Convert.ToDecimal(ViewBag.AvgPrice).ToString("N2")
+                            </h2>
+                        </div>
+
+                        <div class="text-warning fs-1">
+                            <i class="bi bi-cash-stack"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Manage -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <h6 class="text-muted">
+                                Management
+                            </h6>
+
+                            <h2 class="fw-bold text-danger">
+                                Manage
+                            </h2>
+                        </div>
+
+                        <div class="text-danger fs-1">
+                            <i class="bi bi-gear"></i>
+                        </div>
+
+                    </div>
+
+                    <a asp-controller="PriceList"
+                       asp-action="ModifyList"
+                       class="btn btn-outline-danger btn-sm mt-2">
+                        Manage Price List
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Quick Actions -->
+    <div class="card border-0 shadow-sm mt-5">
+
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">
+                Quick Actions
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+
+                    <a asp-controller="PriceList"
+                       asp-action="ViewList"
+                       class="btn btn-outline-success w-100 py-3">
+
+                        <i class="bi bi-search"></i>
+
+                        <br />
+
+                        View Medical Price List
+
+                    </a>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <a asp-controller="PriceList"
+                       asp-action="Create"
+                       class="btn btn-outline-primary w-100 py-3">
+
+                        <i class="bi bi-plus-circle"></i>
+
+                        <br />
+
+                        Add New Service
+
+                    </a>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <a asp-controller="PriceList"
+                       asp-action="ModifyList"
+                       class="btn btn-outline-danger w-100 py-3">
+
+                        <i class="bi bi-pencil-square"></i>
+
+                        <br />
+
+                        Manage Price List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

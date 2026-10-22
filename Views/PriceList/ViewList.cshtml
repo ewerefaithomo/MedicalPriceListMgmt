@@ -1,0 +1,455 @@
+﻿@model IEnumerable<MedicalPriceListApp.Models.PriceList>
+
+@{
+    ViewData["Title"] = "Medical Price List";
+
+    var departments = ViewBag.Departments
+        as IEnumerable<string>
+        ?? Enumerable.Empty<string>();
+
+    var currentBankCode = ViewBag.CurrentBankCode as string;
+    var currentService = ViewBag.CurrentService as string;
+    var currentDepartment = ViewBag.CurrentDepartment as string;
+
+    int resultCount = ViewBag.ResultCount ?? 0;
+}
+
+<div class="container-fluid py-4">
+
+    <!-- ========================================================= -->
+    <!-- PAGE HEADER -->
+    <!-- ========================================================= -->
+
+    <div class="d-flex flex-wrap justify-content-between
+                align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold text-success mb-1">
+
+                <i class="bi bi-list-ul me-2"></i>
+
+                Medical Price List
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                University of Benin Teaching Hospital
+
+            </p>
+
+        </div>
+
+
+        <div class="mt-3 mt-md-0">
+
+            <a asp-controller="PriceList"
+               asp-action="Index"
+               class="btn btn-outline-success me-2">
+
+                <i class="bi bi-speedometer2 me-1"></i>
+
+                Dashboard
+
+            </a>
+
+
+            <a asp-controller="PriceList"
+               asp-action="Create"
+               class="btn btn-success">
+
+                <i class="bi bi-plus-circle me-1"></i>
+
+                Add New Service
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- SEARCH PANEL -->
+    <!-- ========================================================= -->
+
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-header bg-success text-white">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-search me-2"></i>
+
+                Search Medical Price List
+
+            </h5>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <form asp-controller="PriceList"
+                  asp-action="ViewList"
+                  method="get">
+
+                <div class="row g-3">
+
+                    <!-- Bank Code -->
+                    <div class="col-md-4">
+
+                        <label for="bankCode"
+                               class="form-label fw-semibold">
+
+                            Bank Code
+
+                        </label>
+
+                        <input type="text"
+                               id="bankCode"
+                               name="bankCode"
+                               value="@currentBankCode"
+                               class="form-control"
+                               placeholder="Enter Bank Code" />
+
+                        <div class="form-text">
+
+                            Search by Bank Code.
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Service -->
+                    <div class="col-md-4">
+
+                        <label for="service"
+                               class="form-label fw-semibold">
+
+                            Service
+
+                        </label>
+
+                        <input type="text"
+                               id="service"
+                               name="service"
+                               value="@currentService"
+                               class="form-control"
+                               placeholder="Enter service name" />
+
+                        <div class="form-text">
+
+                            Search by service name.
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Department -->
+                    <div class="col-md-4">
+
+                        <label for="department"
+                               class="form-label fw-semibold">
+
+                            Department
+
+                        </label>
+
+                        <select id="department"
+                                name="department"
+                                class="form-select">
+
+                            <option value="">
+                                -- All Departments --
+                            </option>
+
+                            @foreach (var dept in departments)
+                            {
+                                if (dept == currentDepartment)
+                                {
+                                    <option value="@dept"
+                                            selected>
+                                        @dept
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@dept">
+                                        @dept
+                                    </option>
+                                }
+                            }
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Search Buttons -->
+                <div class="mt-4">
+
+                    <button type="submit"
+                            class="btn btn-success me-2">
+
+                        <i class="bi bi-search me-1"></i>
+
+                        Search
+
+                    </button>
+
+
+                    <a asp-controller="PriceList"
+                       asp-action="ViewList"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-arrow-clockwise me-1"></i>
+
+                        Clear Search
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- RESULT INFORMATION -->
+    <!-- ========================================================= -->
+
+    <div class="d-flex flex-wrap justify-content-between
+                align-items-center mb-3">
+
+        <div>
+
+            <h5 class="fw-bold mb-1">
+
+                Price List Records
+
+            </h5>
+
+            <span class="text-muted">
+
+                @resultCount record(s) found
+
+            </span>
+
+        </div>
+
+
+        @if (!string.IsNullOrWhiteSpace(currentBankCode)
+                || !string.IsNullOrWhiteSpace(currentService)
+                || !string.IsNullOrWhiteSpace(currentDepartment))
+        {
+            <div class="mt-2 mt-md-0">
+
+                <span class="badge bg-info text-dark">
+
+                    <i class="bi bi-funnel me-1"></i>
+
+                    Search filter active
+
+                </span>
+
+            </div>
+        }
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- PRICE LIST TABLE -->
+    <!-- ========================================================= -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover
+                              table-bordered align-middle mb-0">
+
+                    <thead class="table-success">
+
+                        <tr>
+
+                            <th style="width: 70px;"
+                                class="text-center">
+
+                                #
+
+                            </th>
+
+                            <th>
+                                Bank Code
+                            </th>
+
+                            <th>
+                                Service
+                            </th>
+
+                            <th>
+                                Department
+                            </th>
+
+                            <th>
+                                Revenue Generating Fund
+                            </th>
+
+                            <th class="text-end">
+                                Current Price
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @if (Model != null && Model.Any())
+                        {
+                            int counter = 1;
+
+                            foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <td class="text-center text-muted">
+                                        @counter
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="fw-semibold">
+
+                                            @item.BANK_CODE
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="fw-semibold text-success">
+
+                                            @item.SERVICES
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        @item.DEPARTMENT
+
+                                    </td>
+
+
+                                    <td>
+
+                                        @item.REVENUE_GENERATING_FUND
+
+                                    </td>
+
+
+                                    <td class="text-end">
+
+                                        <span class="fw-bold">
+
+                                            ₦@item.CURRENT_PRICE.ToString("N2")
+
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                                counter++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td colspan="6"
+                                    class="text-center py-5">
+
+                                    <div class="text-muted">
+
+                                        <i class="bi bi-search"
+                                           style="font-size: 45px;">
+                                        </i>
+
+                                        <h5 class="mt-3">
+
+                                            No Price List Records Found
+
+                                        </h5>
+
+                                        <p class="mb-3">
+
+                                            No record matches the search
+                                            criteria entered.
+
+                                        </p>
+
+                                        <a asp-controller="PriceList"
+                                           asp-action="ViewList"
+                                           class="btn btn-outline-success">
+
+                                            <i class="bi bi-arrow-clockwise me-1"></i>
+
+                                            Show All Records
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- FOOTER INFORMATION -->
+    <!-- ========================================================= -->
+
+    <div class="mt-3 text-muted">
+
+        <small>
+
+            Showing
+            <strong>@resultCount</strong>
+            price list record(s).
+
+        </small>
+
+    </div>
+
+</div>

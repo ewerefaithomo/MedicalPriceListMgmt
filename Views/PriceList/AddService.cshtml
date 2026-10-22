@@ -1,0 +1,377 @@
+﻿@model MedicalPriceListApp.Models.PriceList
+
+@{
+    ViewData["Title"] = "Add New Service";
+
+    var revenueGeneratingFunds =
+        ViewBag.RevenueGeneratingFunds
+        as IEnumerable<string>
+        ?? Enumerable.Empty<string>();
+
+    var departments =
+        ViewBag.Departments
+        as IEnumerable<string>
+        ?? Enumerable.Empty<string>();
+}
+
+<div class="container py-4">
+
+    <!-- ========================================================= -->
+    <!-- PAGE HEADER -->
+    <!-- ========================================================= -->
+
+    <div class="d-flex flex-wrap justify-content-between
+                align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold text-success mb-1">
+
+                <i class="bi bi-plus-circle me-2"></i>
+
+                Add New Medical Service
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                University of Benin Teaching Hospital
+
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <a asp-controller="PriceList"
+               asp-action="ViewList"
+               class="btn btn-outline-success">
+
+                <i class="bi bi-list me-1"></i>
+
+                View Price List
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- SUCCESS MESSAGE -->
+    <!-- ========================================================= -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible
+                        fade show shadow-sm"
+             role="alert">
+
+            <i class="bi bi-check-circle-fill me-2"></i>
+
+            <strong>
+                @TempData["Success"]
+            </strong>
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+    }
+
+
+    <!-- ========================================================= -->
+    <!-- VALIDATION SUMMARY -->
+    <!-- ========================================================= -->
+
+    <div asp-validation-summary="ModelOnly"
+         class="alert alert-danger"
+         role="alert">
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- ADD SERVICE FORM -->
+    <!-- ========================================================= -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-success text-white">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-clipboard2-plus me-2"></i>
+
+                New Medical Service Details
+
+            </h5>
+
+        </div>
+
+
+        <div class="card-body p-4">
+
+            <form asp-controller="PriceList"
+                  asp-action="AddService"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+
+                <div class="row g-4">
+
+                    <!-- ================================================= -->
+                    <!-- BANK CODE -->
+                    <!-- ================================================= -->
+
+                    <div class="col-md-6">
+
+                        <label asp-for="BANK_CODE"
+                               class="form-label fw-semibold">
+
+                            Bank Code
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+                        <input asp-for="BANK_CODE"
+                               class="form-control"
+                               placeholder="Enter Bank Code"
+                               autocomplete="off" />
+
+                        <div class="form-text">
+
+                            Bank Code must be unique.
+
+                        </div>
+
+                        <span asp-validation-for="BANK_CODE"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- SERVICES -->
+                    <!-- ================================================= -->
+
+                    <div class="col-md-6">
+
+                        <label asp-for="SERVICES"
+                               class="form-label fw-semibold">
+
+                            Service
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+                        <input asp-for="SERVICES"
+                               class="form-control"
+                               placeholder="Enter medical service"
+                               autocomplete="off" />
+
+                        <span asp-validation-for="SERVICES"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- CURRENT PRICE -->
+                    <!-- ================================================= -->
+
+                    <div class="col-md-6">
+
+                        <label asp-for="CURRENT_PRICE"
+                               class="form-label fw-semibold">
+
+                            Current Price
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                ₦
+                            </span>
+
+                            <input asp-for="CURRENT_PRICE"
+                                   type="number"
+                                   step="0.01"
+                                   min="0"
+                                   class="form-control"
+                                   placeholder="0.00" />
+
+                        </div>
+
+                        <span asp-validation-for="CURRENT_PRICE"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- REVENUE GENERATING FUND -->
+                    <!-- ================================================= -->
+
+                    <div class="col-md-6">
+
+                        <label asp-for="REVENUE_GENERATING_FUND"
+                               class="form-label fw-semibold">
+
+                            Revenue Generating Fund
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+                        <input asp-for="REVENUE_GENERATING_FUND"
+                               list="revenueFundList"
+                               class="form-control"
+                               placeholder="Select or enter Revenue Generating Fund"
+                               autocomplete="off" />
+
+                        <datalist id="revenueFundList">
+
+                            @foreach (var fund in revenueGeneratingFunds)
+                            {
+                                <option value="@fund"></option>
+                            }
+
+                        </datalist>
+
+                        <div class="form-text">
+
+                            Select an existing fund or type a new one.
+
+                        </div>
+
+                        <span asp-validation-for="REVENUE_GENERATING_FUND"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- DEPARTMENT -->
+                    <!-- ================================================= -->
+
+                    <div class="col-md-6">
+
+                        <label asp-for="DEPARTMENT"
+                               class="form-label fw-semibold">
+
+                            Department
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+                        <input asp-for="DEPARTMENT"
+                               list="departmentList"
+                               class="form-control"
+                               placeholder="Select or enter Department"
+                               autocomplete="off" />
+
+                        <datalist id="departmentList">
+
+                            @foreach (var department in departments)
+                            {
+                                <option value="@department"></option>
+                            }
+
+                        </datalist>
+
+                        <div class="form-text">
+
+                            Select an existing department or type a new one.
+
+                        </div>
+
+                        <span asp-validation-for="DEPARTMENT"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- FORM BUTTONS -->
+                <!-- ================================================= -->
+
+                <hr class="my-4" />
+
+
+                <div class="d-flex flex-wrap gap-2">
+
+                    <button type="submit"
+                            class="btn btn-success px-4">
+
+                        <i class="bi bi-check-circle me-2"></i>
+
+                        Add
+
+                    </button>
+
+
+                    <button type="reset"
+                            class="btn btn-outline-secondary px-4">
+
+                        <i class="bi bi-arrow-clockwise me-2"></i>
+
+                        Clear
+
+                    </button>
+
+
+                    <a asp-controller="PriceList"
+                       asp-action="ViewList"
+                       class="btn btn-outline-success px-4">
+
+                        <i class="bi bi-list me-2"></i>
+
+                        View Price List
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- INFORMATION -->
+    <!-- ========================================================= -->
+
+    <div class="alert alert-info mt-4">
+
+        <i class="bi bi-info-circle-fill me-2"></i>
+
+        <strong>Note:</strong>
+
+        Revenue Generating Fund and Department allow you to select
+        an existing value or enter a new value.
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
